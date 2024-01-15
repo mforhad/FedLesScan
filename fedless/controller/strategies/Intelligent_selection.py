@@ -85,7 +85,6 @@ class DBScanClientSelection(ClientSelectionScheme):
         return updated_ema
 
     def get_client_ema(self, times_list: List, alpha: float = 0.5) -> float:
-
         if len(times_list) == 0:
             return 0
         ema = 0
@@ -151,7 +150,10 @@ class DBScanClientSelection(ClientSelectionScheme):
         # normalize by no of clients/cluster
         for (
             cluster_idx,
-            (cluster_total_ema, cluster_clients,),
+            (
+                cluster_total_ema,
+                cluster_clients,
+            ),
         ) in cluster_number_map.items():
             cluster_number_map[cluster_idx] = (
                 cluster_total_ema / len(cluster_clients),
@@ -161,7 +163,6 @@ class DBScanClientSelection(ClientSelectionScheme):
         # pass
 
     def save_clustering_count(self, round: int, **kwargs) -> None:
-
         preps_dict = {"session_id": self.session, "round_id": round, **kwargs}
         add_headers = not os.path.isfile(self.log_dir / f"clusters_{self.session}.csv")
 
@@ -180,13 +181,14 @@ class DBScanClientSelection(ClientSelectionScheme):
     def save_clustering_details(
         self, round: int, sorted_clusters, selected_clients, max_training_time
     ) -> None:
-
         cluster_dict_list = []
         for (
             cluster_idx,
-            (cluster_ema, cluster_client_configs,),
+            (
+                cluster_ema,
+                cluster_client_configs,
+            ),
         ) in sorted_clusters.items():
-
             for client_config in cluster_client_configs:
                 # round is never zero because clustering works after first round
                 client_penalty = self.get_missed_rounds_ema(

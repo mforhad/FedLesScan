@@ -56,10 +56,22 @@ def test_retry_session_does_retry_with_default_parameters():
         httpretty.POST,
         "https://test-url.com",
         responses=[
-            httpretty.Response(body='{"message": "HTTPretty :)"}', status=502,),
-            httpretty.Response(body='{"message": "HTTPretty :)"}', status=502,),
-            httpretty.Response(body='{"message": "HTTPretty :)"}', status=502,),
-            httpretty.Response(body='{"message": "HTTPretty :)"}', status=200,),
+            httpretty.Response(
+                body='{"message": "HTTPretty :)"}',
+                status=502,
+            ),
+            httpretty.Response(
+                body='{"message": "HTTPretty :)"}',
+                status=502,
+            ),
+            httpretty.Response(
+                body='{"message": "HTTPretty :)"}',
+                status=502,
+            ),
+            httpretty.Response(
+                body='{"message": "HTTPretty :)"}',
+                status=200,
+            ),
         ],
     )
 
@@ -82,8 +94,14 @@ def test_retry_session_does_retry_with_custom_parameters():
         httpretty.GET,
         "http://test-url.com",
         responses=[
-            httpretty.Response(body='{"message": "HTTPretty :)"}', status=400,),
-            httpretty.Response(body='{"message": "HTTPretty :)"}', status=200,),
+            httpretty.Response(
+                body='{"message": "HTTPretty :)"}',
+                status=400,
+            ),
+            httpretty.Response(
+                body='{"message": "HTTPretty :)"}',
+                status=200,
+            ),
         ],
     )
 
@@ -98,8 +116,13 @@ def test_retry_fails_on_invalid_status():
         httpretty.GET,
         "http://test-url.com",
         responses=[
-            httpretty.Response(body='{"message": "HTTPretty :)"}', status=403,),
-            httpretty.Response(body='{"message": "HTTPretty :)"}',),
+            httpretty.Response(
+                body='{"message": "HTTPretty :)"}',
+                status=403,
+            ),
+            httpretty.Response(
+                body='{"message": "HTTPretty :)"}',
+            ),
         ],
     )
     response = session_under_test.get("http://test-url.com")
@@ -169,7 +192,9 @@ def test_async_wsk_invocation_wraps_errors(
 
     # Result is malformed
     httpretty.register_uri(
-        httpretty.POST, dummy_wsk_action_url, body='{"no-activation-id-here": "123"}',
+        httpretty.POST,
+        dummy_wsk_action_url,
+        body='{"no-activation-id-here": "123"}',
     )
 
     with pytest.raises(InvalidInvocationResponse):
@@ -184,14 +209,17 @@ def test_async_wsk_invocation_wraps_errors(
 
 @httpretty.activate
 def test_poll_wsk_result_returns_result(
-    dummy_wsk_action_config, dummy_wsk_activation_url, dummy_wsk_activation_id,
+    dummy_wsk_action_config,
+    dummy_wsk_activation_url,
+    dummy_wsk_activation_id,
 ):
     httpretty.register_uri(
         httpretty.GET,
         dummy_wsk_activation_url,
         responses=[
             httpretty.Response(
-                body='{"error": "The requested resource does not exist."}', status=404,
+                body='{"error": "The requested resource does not exist."}',
+                status=404,
             ),
             httpretty.Response(
                 body='{"status": "string","success": true,"size": 0, "result": {"body": {"value": "My Result"}}}',
@@ -212,17 +240,21 @@ def test_poll_wsk_result_returns_result(
 
 @httpretty.activate
 def test_poll_wsk_result_raises_error_on_no_result(
-    dummy_wsk_action_config, dummy_wsk_activation_url, dummy_wsk_activation_id,
+    dummy_wsk_action_config,
+    dummy_wsk_activation_url,
+    dummy_wsk_activation_id,
 ):
     httpretty.register_uri(
         httpretty.GET,
         dummy_wsk_activation_url,
         responses=[
             httpretty.Response(
-                body='{"error": "The requested resource does not exist."}', status=404,
+                body='{"error": "The requested resource does not exist."}',
+                status=404,
             ),
             httpretty.Response(
-                body='{"error": "The requested resource does not exist."}', status=404,
+                body='{"error": "The requested resource does not exist."}',
+                status=404,
             ),
         ],
     )
@@ -240,7 +272,9 @@ def test_poll_wsk_result_raises_error_on_no_result(
 
 @httpretty.activate
 def test_fetch_wsk_result_wraps_errors(
-    dummy_wsk_action_config, dummy_wsk_activation_url, dummy_wsk_activation_id,
+    dummy_wsk_action_config,
+    dummy_wsk_activation_url,
+    dummy_wsk_activation_id,
 ):
     httpretty.register_uri(
         httpretty.GET,
@@ -257,7 +291,9 @@ def test_fetch_wsk_result_wraps_errors(
         )
 
     httpretty.register_uri(
-        httpretty.GET, dummy_wsk_activation_url, body='{"no-result-here":"sorry"}',
+        httpretty.GET,
+        dummy_wsk_activation_url,
+        body='{"no-result-here":"sorry"}',
     )
     with pytest.raises(InvalidInvocationResponse):
         _fetch_openwhisk_activation_result(
@@ -288,10 +324,12 @@ def test_invoke_wsk_action_sync_returns_result(
         dummy_wsk_activation_url,
         responses=[
             httpretty.Response(
-                body='{"error": "The requested resource does not exist."}', status=404,
+                body='{"error": "The requested resource does not exist."}',
+                status=404,
             ),
             httpretty.Response(
-                body='{"error": "The requested resource does not exist."}', status=404,
+                body='{"error": "The requested resource does not exist."}',
+                status=404,
             ),
             httpretty.Response(
                 body='{"status": "string","success": true,"size": 0, "result": {"body": {"Value": "My Result"}}}',
@@ -316,7 +354,9 @@ def test_invoke_function_sync_returns_correct_result():
     # Successful invocation
     url = "https://test-api-gateway.com/dev/funtion"
     httpretty.register_uri(
-        httpretty.POST, url, body='{"key123": "value123"}',
+        httpretty.POST,
+        url,
+        body='{"key123": "value123"}',
     )
 
     response = invoke_http_function_sync(url, data={})

@@ -19,7 +19,6 @@ def closestNumber(n, m):
 
 
 def calculate_costs_gcf(list_execution_times, offset=1):
-
     mem_list = [512, 2048, 4096, 8192]
     compute_list = [800, 2400, 4800, 4800]
     GB_ms_cost_tier_1 = 0.0000025 / 1000

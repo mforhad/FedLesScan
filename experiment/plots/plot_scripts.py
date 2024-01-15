@@ -125,7 +125,9 @@ def plot_variance(grouped_data, plts, title):
     plot.set_ylabel("Invocations/Client", fontsize=axis_font)
     plot.set_title(title, fontsize=axis_font)
     # plot.xaxis.set_major_locator(MaxNLocator(integer=True))
-    plot.set_xticks([1, 3, 5],)
+    plot.set_xticks(
+        [1, 3, 5],
+    )
     labels = ["FedAvg", "FedlesScan", "Fedprox"]
     plot.set_xticklabels(labels, fontsize=axis_font)
     plot.tick_params(axis="y", labelsize=axis_font - 1)
@@ -242,7 +244,6 @@ def plot_dataset(
 
 
 def get_plot():
-
     cols, rows = (3, 2)  # 3*2
     # grid = plt.GridSpec(rows, cols, wspace = .25, hspace = .25)
     # plot,subs = plt.subplots(rows, cols,figsize=(12,12),squeeze=False)
@@ -299,7 +300,6 @@ def plot_dataset_compare_3(
     for idx, (normal, enhanced, prox) in enumerate(
         zip(path_normals, path_enhanced, path_prox)
     ):
-
         plot_dataset(
             normal,
             (eur, eur_plts[idx]),

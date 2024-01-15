@@ -143,12 +143,12 @@ class CognitoClient:
             raise AuthenticationError(f"Auth server did not return access token") from e
 
     def add_scope_to_client(self, client_id: str, scope: str):
-
         # "update_user_pool_client" requires previously set values to explicitely be included
         # We therefore need to fetch the current information first
         try:
             client_description = self.client.describe_user_pool_client(
-                UserPoolId=self.user_pool_id, ClientId=client_id,
+                UserPoolId=self.user_pool_id,
+                ClientId=client_id,
             )["UserPoolClient"]
 
             required_fields = [

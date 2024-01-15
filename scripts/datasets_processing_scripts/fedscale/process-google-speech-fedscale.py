@@ -35,7 +35,6 @@ def get_fedscale_client_file_lists(mapping_file_path):
 
 
 def get_fedless_client_map(fedscale_client_map, ratio):
-
     fedless_client_map = {}
     fedless_client_idx = 0
     fedscale_mapping_idx = 0

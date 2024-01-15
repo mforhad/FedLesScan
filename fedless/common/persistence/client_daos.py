@@ -34,9 +34,10 @@ class ClientResultDao(MongoDbDao):
         collection: str = "results",
         database: str = "fedless",
     ):
-
         super().__init__(
-            db=db, collection=collection, database=database,
+            db=db,
+            collection=collection,
+            database=database,
         )
         try:
             self._gridfs = GridFS(self._client[self.database])
@@ -90,7 +91,12 @@ class ClientResultDao(MongoDbDao):
             raise PersistenceError(e) from e
 
     @wrap_pymongo_errors
-    def load(self, session_id: str, round_id: int, client_id: str,) -> ClientResult:
+    def load(
+        self,
+        session_id: str,
+        round_id: int,
+        client_id: str,
+    ) -> ClientResult:
         try:
             obj_dict = self._collection.find_one(
                 filter={
@@ -148,12 +154,17 @@ class ClientResultDao(MongoDbDao):
 
     @wrap_pymongo_errors
     def load_results_for_round(
-        self, session_id: str, round_id: int,
+        self,
+        session_id: str,
+        round_id: int,
     ) -> Tuple[List, Iterator[ClientResult]]:
         try:
             result_dicts = list(
                 self._collection.find(
-                    filter={"session_id": session_id, "round_id": round_id,},
+                    filter={
+                        "session_id": session_id,
+                        "round_id": round_id,
+                    },
                 )
             )
         except ConnectionFailure as e:
@@ -181,12 +192,17 @@ class ClientResultDao(MongoDbDao):
 
     @wrap_pymongo_errors
     def delete_results_for_round(
-        self, session_id: str, round_id: int,
+        self,
+        session_id: str,
+        round_id: int,
     ):
         try:
             result_dicts = iter(
                 self._collection.find(
-                    filter={"session_id": session_id, "round_id": round_id,},
+                    filter={
+                        "session_id": session_id,
+                        "round_id": round_id,
+                    },
                 )
             )
             for result_dict in result_dicts:
@@ -194,42 +210,66 @@ class ClientResultDao(MongoDbDao):
                     continue
                 self._gridfs.delete(file_id=result_dict["file_id"])
             self._collection.delete_many(
-                filter={"session_id": session_id, "round_id": round_id,}
+                filter={
+                    "session_id": session_id,
+                    "round_id": round_id,
+                }
             )
         except ConnectionFailure as e:
             raise StorageConnectionError(e) from e
 
     @wrap_pymongo_errors
     def delete_results_for_session(
-        self, session_id: str,
+        self,
+        session_id: str,
     ):
         try:
             result_dicts = iter(
-                self._collection.find(filter={"session_id": session_id,},)
+                self._collection.find(
+                    filter={
+                        "session_id": session_id,
+                    },
+                )
             )
             for result_dict in result_dicts:
                 if not result_dict or "file_id" not in result_dict:
                     continue
                 self._gridfs.delete(file_id=result_dict["file_id"])
             self._collection.delete_many(
-                filter={"session_id": session_id,}
+                filter={
+                    "session_id": session_id,
+                }
             )
         except ConnectionFailure as e:
             raise StorageConnectionError(e) from e
 
     @wrap_pymongo_errors
-    def count_results_for_round(self, session_id: str, round_id: int,) -> int:
+    def count_results_for_round(
+        self,
+        session_id: str,
+        round_id: int,
+    ) -> int:
         try:
             return self._collection.count_documents(
-                filter={"session_id": session_id, "round_id": round_id,},
+                filter={
+                    "session_id": session_id,
+                    "round_id": round_id,
+                },
             )
         except ConnectionFailure as e:
             raise StorageConnectionError(e) from e
 
     @wrap_pymongo_errors
-    def count_results_for_session(self, session_id: str,) -> int:
+    def count_results_for_session(
+        self,
+        session_id: str,
+    ) -> int:
         try:
-            return self._collection.count_documents(filter={"session_id": session_id,},)
+            return self._collection.count_documents(
+                filter={
+                    "session_id": session_id,
+                },
+            )
         except ConnectionFailure as e:
             raise StorageConnectionError(e) from e
 
@@ -288,9 +328,10 @@ class ClientConfigDao(MongoDbDao):
         collection: str = "clients",
         database: str = "fedless",
     ):
-
         super().__init__(
-            db=db, collection=collection, database=database,
+            db=db,
+            collection=collection,
+            database=database,
         )
 
     @wrap_pymongo_errors
@@ -338,9 +379,10 @@ class ParameterDao(MongoDbDao):
         collection: str = "parameters",
         database: str = "fedless",
     ):
-
         super().__init__(
-            db=db, collection=collection, database=database,
+            db=db,
+            collection=collection,
+            database=database,
         )
         try:
             self._gridfs = GridFS(self._client[self.database])
@@ -355,7 +397,6 @@ class ParameterDao(MongoDbDao):
         params: SerializedParameters,
         overwrite: bool = True,
     ) -> Any:
-
         if (
             not overwrite
             and self._collection.find_one(
@@ -371,14 +412,22 @@ class ParameterDao(MongoDbDao):
             file_id = self._gridfs.put(bson.encode(params.dict()), encoding="utf-8")
             self._collection.replace_one(
                 {"session_id": session_id, "round_id": round_id},
-                {"session_id": session_id, "round_id": round_id, "file_id": file_id,},
+                {
+                    "session_id": session_id,
+                    "round_id": round_id,
+                    "file_id": file_id,
+                },
                 upsert=True,
             )
         except (ConnectionFailure, GridFSError) as e:
             raise StorageConnectionError(e) from e
 
     @wrap_pymongo_errors
-    def load(self, session_id: str, round_id: int,) -> SerializedParameters:
+    def load(
+        self,
+        session_id: str,
+        round_id: int,
+    ) -> SerializedParameters:
         try:
             obj_dict = self._collection.find_one(
                 filter={"session_id": session_id, "round_id": round_id},
@@ -408,7 +457,9 @@ class ParameterDao(MongoDbDao):
     def load_latest(self, session_id: str) -> SerializedParameters:
         try:
             obj_dict = (
-                self._collection.find(filter={"session_id": session_id},)
+                self._collection.find(
+                    filter={"session_id": session_id},
+                )
                 .sort("round_id", direction=pymongo.DESCENDING)
                 .next()
             )
@@ -440,7 +491,9 @@ class ParameterDao(MongoDbDao):
     def get_latest_round(self, session_id: str) -> int:
         try:
             obj_dict = (
-                self._collection.find(filter={"session_id": session_id},)
+                self._collection.find(
+                    filter={"session_id": session_id},
+                )
                 .sort("round_id", direction=pymongo.DESCENDING)
                 .next()
             )
@@ -466,9 +519,10 @@ class ModelDao(MongoDbDao):
         collection: str = "models",
         database: str = "fedless",
     ):
-
         super().__init__(
-            db=db, collection=collection, database=database,
+            db=db,
+            collection=collection,
+            database=database,
         )
 
     @wrap_pymongo_errors

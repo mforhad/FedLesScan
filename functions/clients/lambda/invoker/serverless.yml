@@ -1,10 +1,10 @@
 service: invoker
 
-frameworkVersion: '2'
+frameworkVersion: '3.38.0'
 
 provider:
   name: aws
-  runtime: python3.8
+  runtime: python3.10
 
   stage: dev
   region: eu-central-1

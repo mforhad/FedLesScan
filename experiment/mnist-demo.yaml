@@ -1,8 +1,8 @@
 database:
-  host: "cluster0.ucq8wni.mongodb.net/test"
-  port: 1
-  username: fedless
-  password: fedless
+  host: "127.0.0.1"
+  port: 27017
+  username: fedlesscan
+  password: fedlesscan
 
 evaluator:
   params:

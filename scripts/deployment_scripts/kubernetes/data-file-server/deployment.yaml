@@ -9,6 +9,8 @@ spec:
   selector:
     matchLabels:
       app: nginx
+#  strategy:
+#    type: Recreate
   template:
     metadata:
       labels:
@@ -32,4 +34,4 @@ spec:
         - name: dataset-volume
           hostPath:
             path: /datasets
-            type: Directory
+            type: DirectoryOrCreate

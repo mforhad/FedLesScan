@@ -1,9 +1,9 @@
 pydantic==1.8.2
-tensorflow>=2.7.0
-numpy>=1.19.5
-requests>=2.25,<2.30
+tensorflow
+numpy
+requests
 twine==3.3.0
-PyYAML~=5.4.1
+PyYAML
 h5py
 pymongo~=3.11.3
 backoff~=1.10.0
@@ -13,6 +13,7 @@ matplotlib~=3.3.4
 python-jose[cryptography]~=3.3.0
 boto3~=1.17.39
 # tensorflow_privacy@git+https://github.com/tensorflow/privacy.git@331a2911ac3cdf1d9d8d301813be3541257d5bf4#egg=tensorflow_privacy
-tensorflow-privacy==0.8.0
-azure-functions~=1.7.0
+tensorflow-privacy
+azure-functions
 scikit-learn
+helm

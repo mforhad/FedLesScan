@@ -17,3 +17,6 @@ tensorflow-privacy
 azure-functions
 scikit-learn
 helm
+pydot
+graphviz
+pydotplus

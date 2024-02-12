@@ -109,6 +109,20 @@ def plot(history):
     plt.show()
 
 
+## Temporary function
+def create_sleep_apnea_model():
+    x_train, y_train, groups_train, x_test, y_test, groups_test = load_data()
+
+    y_train = keras.utils.to_categorical(y_train, num_classes=2) # Convert to two categories
+    y_test = keras.utils.to_categorical(y_test, num_classes=2)
+
+    print("train num:", len(y_train))
+    print("test num:", len(y_test))
+
+    model = create_model(input_shape=x_train.shape[1:])
+    return model
+
+
 if __name__ == "__main__":
     x_train, y_train, groups_train, x_test, y_test, groups_test = load_data()
 

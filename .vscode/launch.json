@@ -116,6 +116,42 @@
                 // "--tum-proxy"
                 "--mock"
             ]
+        },
+        {
+            "pythonArgs": [
+                "-X",
+                "dev",
+            ],
+            "subProcess": true,
+            "name": "sleep-apnea-exp",
+            "type": "python",
+            "request": "launch",
+            "module": "fedless.controller.scripts",
+            "console": "integratedTerminal",
+            "args": [
+                "-d",
+                "sleep-apnea",
+                "-s",
+                "fedlesscan",
+                "-c",
+                "${workspaceFolder}/experiment/sleep-apnea-demo.yaml",
+                "--clients",
+                "10",
+                "--clients-in-round",
+                "4",
+                "--stragglers",
+                "1",
+                "--max-accuracy",
+                "0.6",
+                "--out",
+                "${workspaceFolder}/out/fedless-sleep-apnea-demo",
+                "--rounds",
+                "2",
+                "--timeout",
+                "800",
+                // "--tum-proxy"
+                "--mock"
+            ]
         }
     ]
 }

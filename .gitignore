@@ -20,10 +20,10 @@ lib64/
 parts/
 sdist/
 var/
-fedless/datasets/sleep-apnea/dataset/
-fedless/datasets/sleep-apnea/output/
-fedless/datasets/sleep-apnea/architecture.png
-fedless/datasets/sleep-apnea/model.png
+fedless/datasets/sleepapnea/dataset/
+fedless/datasets/sleepapnea/output/
+fedless/datasets/sleepapnea/architecture.png
+fedless/datasets/sleepapnea/model.png
 wheels/
 share/python-wheels/
 *.egg-info/

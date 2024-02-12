@@ -15,6 +15,7 @@ from fedless.datasets.fedscale.google_speech.dataset_loader import (
     FedScaleConfig,
 )
 from fedless.datasets.fedscale.google_speech.model import create_speech_cnn
+from fedless.datasets.sleepapnea.LeNet import create_sleep_apnea_model
 
 from fedless.datasets.leaf.model import create_femnist_cnn, create_shakespeare_lstm
 from fedless.datasets.mnist.helpers import create_mnist_train_data_loader_configs
@@ -51,6 +52,8 @@ def create_model(dataset) -> tf.keras.Sequential:
         return create_mnist_cnn()
     elif dataset.lower() == "speech":
         return create_speech_cnn((32, 32, 1), 35)
+    elif dataset.lower() == "sleep-apnea":
+        return create_sleep_apnea_model()
     else:
         raise NotImplementedError()
 

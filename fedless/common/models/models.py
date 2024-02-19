@@ -18,6 +18,7 @@ from fedless.datasets.fedscale.google_speech.dataset_loader import FedScaleConfi
 
 from fedless.datasets.leaf.dataset_loader import LEAFConfig
 from fedless.datasets.mnist.dataset_loader import MNISTConfig
+from fedless.datasets.sleepapnea.dataset_loader import SleepApneaConfig
 
 Parameters = List[np.ndarray]
 
@@ -101,7 +102,7 @@ class DatasetLoaderConfig(BaseModel):
     """Configuration for arbitrary dataset loaders"""
 
     type: str
-    params: Union[LEAFConfig, MNISTConfig, FedScaleConfig]
+    params: Union[LEAFConfig, MNISTConfig, FedScaleConfig, SleepApneaConfig]
     # params: DatasetConfig
 
     _params_type_matches_type = validator("params", allow_reuse=True)(

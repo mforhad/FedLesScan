@@ -15,11 +15,15 @@ from fedless.datasets.fedscale.google_speech.dataset_loader import (
     FedScaleConfig,
 )
 from fedless.datasets.fedscale.google_speech.model import create_speech_cnn
-from fedless.datasets.sleepapnea.LeNet import create_sleep_apnea_model
 
 from fedless.datasets.leaf.model import create_femnist_cnn, create_shakespeare_lstm
 from fedless.datasets.mnist.helpers import create_mnist_train_data_loader_configs
 from fedless.datasets.mnist.model import create_mnist_cnn
+from fedless.datasets.sleepapnea.helpers import create_sleep_apnea_train_data_loader_configs
+from fedless.datasets.sleepapnea.model import (
+    create_sleep_apnea_model,
+    get_sleep_apnea_input_shape
+)
 from fedless.common.models import (
     BinaryStringFormat,
     DatasetLoaderConfig,
@@ -35,9 +39,11 @@ from fedless.common.serialization import (
     serialize_model,
 )
 from fedless.datasets.mnist.dataset_loader import MNISTConfig
+from fedless.datasets.mnist.dataset_loader import MNIST
+from fedless.datasets.sleepapnea.dataset_loader import SleepApneaConfig
+from fedless.datasets.sleepapnea.dataset_loader import SleepApnea
 from fedless.datasets.leaf.dataset_loader import LEAFConfig
 from fedless.datasets.leaf.dataset_loader import LEAF
-from fedless.datasets.mnist.dataset_loader import MNIST
 
 logger = logging.getLogger(__name__)
 FILE_SERVER = "http://138.246.235.175:81"
@@ -52,8 +58,9 @@ def create_model(dataset) -> tf.keras.Sequential:
         return create_mnist_cnn()
     elif dataset.lower() == "speech":
         return create_speech_cnn((32, 32, 1), 35)
-    elif dataset.lower() == "sleep-apnea":
-        return create_sleep_apnea_model()
+    elif dataset.lower() == "sleepapnea":
+        input_shape = get_sleep_apnea_input_shape()
+        return create_sleep_apnea_model(input_shape)
     else:
         raise NotImplementedError()
 
@@ -96,6 +103,12 @@ def create_mnist_test_config(proxies) -> DatasetLoaderConfig:
     )
 
 
+def create_sleep_apnea_test_config(proxies) -> DatasetLoaderConfig:
+    return DatasetLoaderConfig(
+        type="sleepapnea", params=SleepApneaConfig(split="test", proxies=proxies)
+    )
+
+
 # returns the configs and the number of clients available for testing
 # noinspection PydanticTypeChecker,PyTypeChecker
 def create_data_configs(
@@ -112,7 +125,13 @@ def create_data_configs(
             )
         )
         return mn_configs, len(mn_configs)
-
+    elif dataset == "sleepapnea":
+        mn_configs = list(
+            create_sleep_apnea_train_data_loader_configs(
+                n_devices=clients, n_shards=160, proxies=proxies
+            )
+        )
+        return mn_configs, len(mn_configs)
     elif dataset in ["femnist", "shakespeare"]:
         configs = []
         for client_idx in range(clients):
@@ -120,16 +139,14 @@ def create_data_configs(
                 type="leaf",
                 params=LEAFConfig(
                     dataset=dataset,
-                    location=f"{FILE_SERVER}/datasets/leaf/data/{dataset}/data/"
-                    f"train/user_{client_idx}_train_9.json",
+                    location=f"fedless/datasets/leaf/{dataset}/data/train/user_{client_idx}_train_9.json",
                 ),
             )
             test = DatasetLoaderConfig(
                 type="leaf",
                 params=LEAFConfig(
                     dataset=dataset,
-                    location=f"{FILE_SERVER}/datasets/leaf/data/{dataset}/data/"
-                    f"test/user_{client_idx}_test_9.json",
+                    location=f"fedless/datasets/leaf/{dataset}/data/test/user_{client_idx}_test_9.json",
                 ),
             )
             configs.append((train, test))
@@ -150,7 +167,8 @@ def create_data_configs(
                 type="speech",
                 params=FedScaleConfig(
                     dataset=dataset,
-                    location=f"{FILE_SERVER}/datasets/google_speech/npz/test/client_{client_idx%num_test_clients}.npz",
+                    # location=f"{FILE_SERVER}/datasets/google_speech/npz/test/client_{client_idx%num_test_clients}.npz",
+                    location=f"scripts/datasets_processing_scripts/fedscale/google_speech/npz/test/client_{client_idx%num_test_clients}.npz"
                 ),
             )
             configs.append((train, test))
@@ -181,6 +199,14 @@ class DatasetLoaderBuilder:
             # location is added by default here
             return MNIST(
                 split=params.split, indices=params.indices, proxies=params.proxies
+            )
+        elif config.type == "sleepapnea":
+            params: SleepApneaConfig = config.params
+            return SleepApnea(
+                split=params.split,
+                indices=params.indices,
+                proxies=params.proxies,
+                location=params.location
             )
         elif config.type == "speech":
             params: FedScaleConfig = config.params

@@ -16,6 +16,8 @@ def create_mnist_cnn(num_classes=10):
         ]
     )
 
+    model.summary()
+
     model.compile(
         optimizer="adam", loss="sparse_categorical_crossentropy", metrics=["accuracy"],
     )

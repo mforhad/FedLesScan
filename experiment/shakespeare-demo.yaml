@@ -1,13 +1,13 @@
 database:
-  host: "cluster0.ucq8wni.mongodb.net/test"
-  port: 1
+  host: "localhost/fedless?authMechanism=DEFAULT"
+  port: 27017
   username: fedless
   password: fedless
 
 evaluator:
   params:
     type: openfaas
-    url: http://138.246.234.228:31112/function/evaluator
+    url: http://127.0.0.1:37951/function/evaluator
   type: openfaas
 
 aggregator:
@@ -16,7 +16,7 @@ aggregator:
   function:
     params:
       type: openfaas
-      url: http://138.246.234.228:31112/function/aggregator
+      url: http://127.0.0.1:37951/function/aggregator
     type: openfaas
 
 clients:

@@ -147,7 +147,7 @@ def get_mel_spec(waveform, sampling_rate):
     n_fft = 2048
     n_mels = 32
     hop_length = 512
-    mel_basis = librosa.filters.mel(sampling_rate, 2048, n_mels)
+    mel_basis = librosa.filters.mel(sr=int(sampling_rate), n_fft=int(2048), n_mels=int(n_mels))
     stft = librosa.stft(waveform.numpy(), n_fft=n_fft, hop_length=hop_length)
     s = np.dot(mel_basis, np.abs(stft) ** 2.0)
     mel_spec_db = librosa.power_to_db(s, ref=np.max)

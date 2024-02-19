@@ -24,6 +24,7 @@ fedless/datasets/sleepapnea/dataset/
 fedless/datasets/sleepapnea/output/
 fedless/datasets/sleepapnea/architecture.png
 fedless/datasets/sleepapnea/model.png
+scripts/datasets_processing_scripts/fedscale/google_speech
 wheels/
 share/python-wheels/
 *.egg-info/

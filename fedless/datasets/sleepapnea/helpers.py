@@ -34,6 +34,6 @@ def create_sleep_apnea_train_data_loader_configs(
         indices = np.concatenate(client_shards)
         # noinspection PydanticTypeChecker,PyTypeChecker
         yield DatasetLoaderConfig(
-            type="mnist", params=SleepApneaConfig(indices=indices.tolist(), proxies=proxies)
+            type="sleepapnea", params=SleepApneaConfig(indices=indices.tolist(), proxies=proxies)
         )
 

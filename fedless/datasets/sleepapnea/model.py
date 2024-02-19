@@ -17,7 +17,6 @@ import tensorflow as tf
 from keras.utils import plot_model
 
 base_dir = "fedless/datasets/sleepapnea/dataset"
-# base_dir = "dataset"
 
 ir = 3 # interpolate interval
 before = 2
@@ -27,9 +26,20 @@ after = 2
 scaler = lambda arr: (arr - np.min(arr)) / (np.max(arr) - np.min(arr))
 
 
+def save_data_to_npz(x_train, y_train, x_test, y_test, file_name):
+    file_path = os.path.join(base_dir, file_name)
+    print("npz file path: " + file_path)
+
+    if os.path.exists(file_path):
+        print(f"The file {file_path} already exists. Skipping saving.")
+        return
+
+    np.savez(file_path, x_train=x_train, y_train=y_train, x_test=x_test, y_test=y_test)
+
+
 def load_data():
     tm = np.arange(0, (before + 1 + after) * 60, step=1 / float(ir))
-    print(base_dir)
+    print("file_base directory: " + base_dir)
 
     with open(os.path.join(base_dir, "apnea-ecg.pkl"), 'rb') as f: # read preprocessing result
         apnea_ecg = pickle.load(f)
@@ -57,6 +67,8 @@ def load_data():
         x_test.append([rri_interp_signal, ampl_interp_signal])
     x_test = np.array(x_test, dtype="float32").transpose((0, 2, 1))
     y_test = np.array(y_test, dtype="float32")
+
+    save_data_to_npz(x_train, y_train, x_test, y_test, "sleepapnea.npz")
 
     return x_train, y_train, groups_train, x_test, y_test, groups_test
 

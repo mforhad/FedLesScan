@@ -107,6 +107,7 @@ class ServerlessFlStrategy(FLStrategy, ABC):
     def save_invocation_details(
         self, session: str, round: int, dir: Optional[Path] = None, **kwargs
     ) -> None:
+
         if not dir:
             dir = Path.cwd()
         preps_dict = {"session_id": session, "round_id": round, **kwargs}
@@ -270,6 +271,7 @@ class ServerlessFlStrategy(FLStrategy, ABC):
         # add client backoff and add the missing rounds
         # the backoff is computed from the last missed round
         for failed_client_id in all_clients:
+
             failed_client: ClientPersistentHistory = client_history_dao.load(
                 failed_client_id
             )
@@ -356,10 +358,7 @@ class ServerlessFlStrategy(FLStrategy, ABC):
 
         logger.info(f"Round {round}: loss={loss}, acc={acc}")
         self.save_round_results(
-            session=self.session,
-            round=round,
-            dir=self.save_dir,
-            **metrics_misc,
+            session=self.session, round=round, dir=self.save_dir, **metrics_misc,
         )
         return loss, acc, metrics_misc
 

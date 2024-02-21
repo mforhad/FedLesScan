@@ -132,7 +132,9 @@ class MongodbConnectionConfig(BaseSettings):
     @property
     def url(self) -> str:
         """Return url representation"""
-        return f"mongodb://{parse.quote(self.username)}:{parse.quote(self.password)}@{self.host}:{self.port}"
+        return f"mongodb://{parse.quote(self.username)}:{parse.quote(self.password)}@{self.host}:{self.port}"        
+        
+
 
     class Config:
         env_prefix = "fedless_mongodb_"

@@ -9,6 +9,7 @@ class MockClient:
 
     async def run_client(self):
         try:
+
             return fedless_mongodb_handler(
                 session_id=self.config.session_id,
                 round_id=self.config.round_id,

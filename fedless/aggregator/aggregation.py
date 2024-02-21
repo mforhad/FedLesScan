@@ -52,6 +52,7 @@ def default_aggregation_handler(
     aggregation_strategy: AggregationStrategy = AggregationStrategy.PER_ROUND,
     aggregation_hyper_params: AggregationHyperParams = None,
 ) -> AggregatorFunctionResult:
+
     # mongo_client = pymongo.MongoClient(
     #     host=database.host,
     #     port=database.port,
@@ -62,6 +63,7 @@ def default_aggregation_handler(
     mongo_client = pymongo.MongoClient(database.url)
     logger.info(f"Aggregator invoked for session {session_id} and round {round_id}")
     try:
+
         result_dao = ClientResultDao(mongo_client)
         parameter_dao = ParameterDao(mongo_client)
         # logger.debug(f"Establishing database connection")

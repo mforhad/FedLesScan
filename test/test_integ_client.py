@@ -45,8 +45,7 @@ def model_loader_config():
 @pytest.fixture
 def data_loader_config():
     return DatasetLoaderConfig(
-        type="leaf",
-        params=LEAFConfig(dataset="femnist", location=FEMNIST_DATA_DIR),
+        type="leaf", params=LEAFConfig(dataset="femnist", location=FEMNIST_DATA_DIR),
     )
 
 
@@ -54,12 +53,10 @@ def data_loader_config():
 def remote_data_loader_config(requests_mock: requests_mock.Mocker):
     url = "https://test-url.com"
     requests_mock.get(
-        url,
-        content=FEMNIST_DATA_FILE_PATH.read_bytes(),
+        url, content=FEMNIST_DATA_FILE_PATH.read_bytes(),
     )
     return DatasetLoaderConfig(
-        type="leaf",
-        params=LEAFConfig(dataset="femnist", location=url),
+        type="leaf", params=LEAFConfig(dataset="femnist", location=url),
     )
 
 

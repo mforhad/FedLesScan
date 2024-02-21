@@ -110,8 +110,7 @@ def lambda_proxy_handler(
     caught_exceptions: tuple(Iterable[Exception]),
 ) -> Callable[[Callable], Callable]:
     """API Gateway's lambda proxy integration compatible
-    decorator to parse input, catch certain exceptions and respond to them with 400 errors.
-    """
+    decorator to parse input, catch certain exceptions and respond to them with 400 errors."""
 
     def decorator(func):
         def patched_func(event, context):
@@ -181,8 +180,7 @@ def openfaas_action_handler(
 def openwhisk_action_handler(
     caught_exceptions: tuple(Iterable[Exception]),
 ) -> Callable[
-    [Callable[[Dict], Union[pydantic.BaseModel, str]]],
-    Callable[[Dict], Dict],
+    [Callable[[Dict], Union[pydantic.BaseModel, str]]], Callable[[Dict], Dict],
 ]:
     """Decorator for Openwhisk action handlers to parse input,
     catch certain exceptions and respond to them with 400 errors.

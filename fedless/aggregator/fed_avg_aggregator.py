@@ -60,6 +60,7 @@ class FedAvgAggregator(ParameterAggregator):
         client_feats: List[dict],
         default_cardinality: Optional[float] = None,
     ) -> Tuple[Parameters, Optional[List[TestMetrics]]]:
+
         client_parameters: List[List[np.ndarray]] = []
         client_cardinalities: List[int] = []
         client_metrics: List[TestMetrics] = []
@@ -113,6 +114,7 @@ class StreamFedAvgAggregator(FedAvgAggregator):
         client_feats: List[dict],
         default_cardinality: Optional[float] = None,
     ) -> Tuple[Parameters, Optional[List[TestMetrics]]]:
+
         curr_global_params: Parameters = None
         curr_sum_weights = 0
         client_metrics: List[TestMetrics] = []

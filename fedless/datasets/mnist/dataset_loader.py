@@ -25,7 +25,6 @@ class MNISTConfig(BaseModel):
         "https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz"
     )
 
-
 class MNIST(DatasetLoader):
     def __init__(
         self,

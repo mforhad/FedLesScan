@@ -1,7 +1,7 @@
 import csv
 import numpy as np
 import os
-from fedscale.processing_utils import get_mel_and_label
+from processing_utils import get_mel_and_label
 
 
 # mapp client number to sample list
@@ -63,6 +63,9 @@ def get_fedless_client_map(fedscale_client_map, ratio):
 
 
 def createZip(dataset_path, client_files, output_name):
+    print(dataset_path)
+    print(str(client_files))
+    print(output_name)
     data = []
     labels = []
     for file_name in client_files:
@@ -74,8 +77,8 @@ def createZip(dataset_path, client_files, output_name):
     np.savez(output_name, data=data, labels=labels)
 
 
-MAPPING_PATH = "./google_speech/client_data_mapping/"
-DATASET_PATH = "./google_speech"
+MAPPING_PATH = "google_speech/client_data_mapping/"
+DATASET_PATH = "google_speech"
 data_type = "test"
 # ratio to the number of clients: each fedless client is responsible for the data of 8 fedscale clients
 # 8 for train 0-270
@@ -94,7 +97,7 @@ for i in fedless_client_map:
     createZip(
         DATASET_PATH + f"/{data_type}",
         fedless_client_map[i],
-        f"./google_speech/npz/{data_type}/client_{i}.npz",
+        f"google_speech/npz/{data_type}/client_{i}.npz",
     )
     print(f"saved data for client '{i}'")
 

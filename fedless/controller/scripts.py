@@ -43,7 +43,7 @@ logger = logging.getLogger(__name__)
     "-d",
     "--dataset",
     type=click.Choice(
-        ["mnist", "femnist", "shakespeare", "speech"], case_sensitive=False
+        ["mnist", "femnist", "shakespeare", "speech", "sleepapnea"], case_sensitive=False
     ),
     required=True,
     # help='Evaluation dataset. One of ("mnist", "femnist", "shakespeare")',
